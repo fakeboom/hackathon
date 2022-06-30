@@ -148,9 +148,9 @@ export function HistoryCard({}:{ }){
                         <CardText1 style={{flex:'2', textAlign:'right'}}>betAmount</CardText1>
                         <CardText1 style={{flex:'2', textAlign:'right'}}>earnAmount</CardText1>
                         <CardText1 style={{flex:'2', textAlign:'right'}}>player</CardText1>
-                        <span style={{flex:'1', textAlign:'right'}}>
-
-                        </span>
+                        <CardText1 style={{flex:'1', textAlign:'right'}}>
+                            hash
+                        </CardText1>
                     </Row>
             <div style = {{maxHeight : '300px', overflow:'scroll'}}>
             {
@@ -160,27 +160,32 @@ export function HistoryCard({}:{ }){
                     <Row style={{borderBottom:'1px solid rgba(255, 255, 255, 0.6)'}}>
                         <CardText1 style={{minWidth:'100px'}}>{item.id}</CardText1>
                         <CardText1 style={{flex:'2', textAlign:'right'}}>{item.finalGuess}</CardText1>
-                        <CardText1 style={{flex:'2', textAlign:'right'}}>{fixFloat(tokenAmountForshow(item.betAmount, 18),3)}&nbsp;ETH</CardText1>
+                        <CardText1 style={{flex:'2', textAlign:'right'}}>{fixFloat(tokenAmountForshow(item.betAmount, 18),3)}&nbsp;ROSE</CardText1>
                         <CardText1 style={{flex:'2', textAlign:'right', color: color[item.status]}}>
                             {
-                                item.status == GameStatus.Pending?
+                                item.status == GameStatus.Pending ?
                                 "Pending"
                                 :
                                 item.status == GameStatus.Success?
-                                fixFloat(tokenAmountForshow(item.earnAmount, 18),3) + ' ETH'
+                                fixFloat(tokenAmountForshow(item.earnAmount, 18),3) + ' ROSE'
                                 :
                                 '-'                           
                             }
                             </CardText1>
                         <CardText1 style={{flex:'2', textAlign:'right'}}>{showAddress(item.playerAddress as string)}</CardText1>
                         <span style={{flex:'1', textAlign:'right'}}>
-                            <ClickImg 
+                            {
+                                item.hash != ''?
+                                <ClickImg 
                                 onClick={
                                     ()=>{
                                         window.open((CHAIN_CONFIG as any)[chainId ?? DefaultChainId].blockExplorerUrl + '/tx/' + item.hash)
                                     }
                                 }
                                 src={JumpImg} height={'25px'}/>
+                                :
+                                null
+                            }                          
                         </span>
                     </Row>
                     )

@@ -27,7 +27,7 @@ class MysqlService extends Service {
                     address: address,
                     burstvalue: burstValue,
                     amount: amount,
-                    success: success
+                    success: success,
                 }
             )
             console.log(result)
@@ -94,12 +94,25 @@ class MysqlService extends Service {
             {
                 burstvalue: burstValue,
                 amount: amount,
-                success: success
+                success: success,
             },
             {
                 where:{
                     gameid: gameid,
                     address: address,
+                }
+            }
+        )
+    }
+
+    async updateBetHash(gameid, hash){
+        await this.app.mysql.update('betinfo',
+            {
+                endhash: hash
+            },
+            {
+                where:{
+                    gameid: gameid,
                 }
             }
         )
@@ -130,11 +143,12 @@ class MysqlService extends Service {
         return result
     }
 
-    async endGame(id){
+    async endGame(id, hash){
         await this.app.mysql.update(
             'gameinfo',
             {
-                isend: '1'
+                isend: '1',
+                endhash: hash
             },
             {
                 where:{

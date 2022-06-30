@@ -15,12 +15,8 @@ class HomeController extends Controller {
     const qr = await service.mysql.getGameInfo()
     console.log(qr)
 
-    const nowgame = await this.app.redis.get('nowgame')
-    ctx.body += ('\n' + nowgame)
-    console.log(nowgame)
-
-    const records = await ctx.service.web3.getGameRecord(10920445)
-    console.log('records', records)
+    await this.service.mysql.updateBetHash(1845832, "123")
+    
   }
   
   async contractBalance(){

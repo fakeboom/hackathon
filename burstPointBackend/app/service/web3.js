@@ -101,14 +101,15 @@ class Web3Service extends Service {
         web3.utils.toHex(0),
         contract.methods.closeGame(blockNum, burstValue, password).encodeABI()
         )
-    web3.eth.sendSignedTransaction(serializedTx.rawTransaction)
+    await web3.eth.sendSignedTransaction(serializedTx.rawTransaction)
     .on('transactionHash',(hash)=>{
         console.log('txHash:', hash)
     }
     )
     .on('receipt',(receipt)=>{
         console.log('closeGame success' , blockNum)
-        this.service.mysql.endGame(blockNum)
+        this.service.mysql.endGame(blockNum, receipt.transactionHash)
+        this.service.mysql.updateBetHash(blockNum, receipt.transactionHash)
     }
     )
     .on('error', (error)=>{

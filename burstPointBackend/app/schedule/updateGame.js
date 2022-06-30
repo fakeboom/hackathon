@@ -29,12 +29,13 @@ module.exports = {
                 await ctx.service.web3.startGame(nowBlock, 100 + Math.floor(Math.random()*900), 'test')
                 break
             }
-            const game = await ctx.service.mysql.getGame(handleEndBlock)
+            var game = await ctx.service.mysql.getGame(handleEndBlock)
             if(game && game.length == 1){
                 if(nowBlock - handleEndBlock > 110){
-                    console.log('end left', nowBlock - handleEndBlock )
+                    console.log('end left', nowBlock - handleEndBlock)
                     await ctx.service.web3.closeGame(handleEndBlock, game[0].burstvalue, game[0].password)
                 }
+                game = await ctx.service.mysql.getGame(handleEndBlock)
                 const records = await ctx.service.web3.getGameRecord(handleEndBlock)
                 const addressList = records[0]
                 const objectList = records[1]
